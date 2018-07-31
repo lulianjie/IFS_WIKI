@@ -20,7 +20,7 @@ using PPJ.Runtime;
 using PPJ.Runtime.Windows;
 ```
 2. 写入画面的历史变更记录
-```
+```C#
 #region History
 /// Date    By      Notes
 /// ------  ------  ------------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ using PPJ.Runtime.Windows;
    在画面或者字段的属性画面中点击Events，找到WindowsAction，双击内容区域则增加事件调用
    ![](assets/image/dlg_develop_5.png )
 8. 重写cDialog类的LateBind接口，一般重写vrtUserMethod方法即可
-```
+```C#
         #region Late Bind Methods
 
         /// <summary>
