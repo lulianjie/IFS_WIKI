@@ -114,7 +114,7 @@ using PPJ.Runtime.Windows;
         }
 ```
 10. 补充步骤7中添加的WindowsAction具体实现方法
-```
+```C#
         private void dlgCreateCountReportBlank_WindowActions(object sender, WindowActionsEventArgs e)
         {
             switch (e.ActionType)
@@ -129,7 +129,7 @@ using PPJ.Runtime.Windows;
             }
         }
 ```
-```
+```C#
         private void dlgCreateCountReportBlank_OnSAM_Create(object sender, WindowActionsEventArgs e)
         {
             e.Handled = true;
@@ -137,7 +137,7 @@ using PPJ.Runtime.Windows;
             Sal.CenterWindow(this);
         }
 ```
-```
+```C#
         //改事件调用自行实现的注册按钮方法InvestigateButtonStates()
         private void dlgCreateCountReportBlank_OnPM_DataItemEntered(object sender, WindowActionsEventArgs e)
         {
@@ -146,7 +146,7 @@ using PPJ.Runtime.Windows;
         }
 ```
 11. 实现本例中增加的3个按钮画面注册到窗体中方法
-```
+```C#
         public virtual SalNumber InvestigateButtonStates()
         {
             using (new SalContext(this))
@@ -159,7 +159,7 @@ using PPJ.Runtime.Windows;
         }
 ```
 12. 解决本例中当Count Report No选择数据后自动带出Site值的处理逻辑
-```
+```C#
         public virtual SalBoolean ValidateSite()
         {
             if (Sal.IsNull(dfCountReportNumber))
@@ -179,7 +179,7 @@ using PPJ.Runtime.Windows;
         }
 ```
 13. 如果遇到带入参有其他画面调用的dlg画面，则需要在ModalDialog方法内增加入参，参考已有例子或者开发手册
-```
+```C#
         public static SalNumber ModalDialog(Control owner, SalNumber nYear, SalNumber nPeriod, SalString sContract)
         {
             dlgInventoryValueRep dlg = DialogFactory.CreateInstance<dlgInventoryValueRep>();
@@ -191,7 +191,7 @@ using PPJ.Runtime.Windows;
         }
 ```
 14. 将画面注册到Navigator或者写由其他画面调用
-```
+```C#
     dlgInventoryValueRep.ModalDialog(Ifs.Fnd.ApplicationForms.Int.Explorer.ExplorerForm, nStatYearNo, dfnStatPeriodNo.Number, dfsContract.Text);
 ```
 30. 最终，一个dlg画面的代码部分大概是如下层次结构的
