@@ -13,7 +13,7 @@ _____
 ![](assets/image/dlg_develop_2.png )
 2. 删除自带的commandOk和commandCancel按钮以及代码
 2. 替换已有的命名空间引用
-```
+```C#
 using System.Windows.Forms;
 using Ifs.Fnd.ApplicationForms;
 using PPJ.Runtime;
