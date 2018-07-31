@@ -23,11 +23,11 @@
 ****
 # 2. 后台开发工具安装
   
-### 安装IFSDeveloperStudio，一路Next安装完毕。
-**注意事项：**
-*1.需要先安装Java环境；*
-*2.由于软件是64位所以要求操作系统为64位。*
-*3.本次数据库实例名（PROD9）*
+###安装IFSDeveloperStudio，一路Next安装完毕。
+注意事项：
+1.需要先安装Java环境；
+2.由于软件是64位所以要求操作系统为64位。
+3.本次数据库实例名（PROD9）
   
 ****
 # 3. 前台开发工具安装
@@ -59,8 +59,8 @@
   
 复制一个功能模块代码到文件夹 \IFSApplicationFormsDevelopment\workspace中，进入已复制的模块代码中，找到一个VS工程文件，使用VS 2013打开，如下图出现IFS DEVELOPMENT TOOLS则插件与VS 2013匹配成功，图中错误信息可以无视
 ![](assets/image/10.png )
-![](assets/image/11.png )
-**注意事项：**
+![](assets/image/11.png )<br />
+**注意事项：**<br />
 *需要安装``.``NET Framework 4.5.2环境*
   
 ****
