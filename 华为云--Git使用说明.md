@@ -33,3 +33,7 @@ https://dl.devcloud.huaweicloud.com/home ，输入公司账号密码登录
 ![](assets/image/huawei-13.png)
 ### 2.4 修改默认作者，用于区分代码归属
 ![](assets/image/huawei-14.png)
+### 2.5 更多Sourcetree操作请参照其他文章介绍
+https://www.cnblogs.com/tian-xie/p/6264104.html
+# 3.增量提取变更代码
+git diff 61d2112 f3c0f99 --name-only | xargs zip update.zip
