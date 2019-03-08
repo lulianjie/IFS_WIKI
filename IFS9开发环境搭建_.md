@@ -28,7 +28,21 @@
 1. 需要先安装Java环境；
 2. 由于软件是64位所以要求操作系统为64位。
 3. 本次数据库实例名（PROD9）
-  
+4. 新建IFS项目，选择客户化项目
+![](assets/image/huanjing-01.png )
+5. 确定project_root，一般也可以由build_home路径代替，注意文件目录
+![](assets/image/huanjing-02.png )
+6. 填入项目名称，本地路径以及Build Home地址
+![](assets/image/huanjing-03.png )
+![](assets/image/huanjing-04.png )
+7. 配置webservice信息，如需要再配置，本例学习不做配置
+![](assets/image/huanjing-05.png )
+8. 添加数据库连接，可以有多个连接而设定一个为主连接
+![](assets/image/huanjing-06.png )
+![](assets/image/huanjing-07.png )
+9. 项目添加完成
+![](assets/image/huanjing-08.png )
+
 ****
 # 3. 前台开发工具安装
   
@@ -43,25 +57,32 @@
   
 执行安装文件，一路Next安装完毕
   
-### 3.3. 将开发服务器共享的project_root文件夹复制到本地
-  
-![](assets/image/6.png )
-  
-### 3.4. 安装IFS前台开发插件→IFSApplicationFormsDevelopment
-  
-运行安装程序文件 SetupIFSAPFDevelopment90.exe，如果误杀请添加信任，参照下图路径设置后一路Next安装完毕
-![](assets/image/7.png )
-安装完毕后修改配置文件IFSApplicationFormsDevelopment\project.config TeamServerProjectRoot内容改为开发服务器的共享位置
-![](assets/image/8.png )
-运行同步工具Reset Deploy Files from Team Server，Update Deploy Files from Team Server，如果同步成功则代表安装设置成功，如果出现异常，需要检查Logfiles中的log文件，排除异常后再次同步
-  
-### 3.5. 确认安装插件与Microsoft Visual Studio 2013匹配
-  
-复制一个功能模块代码到文件夹 \IFSApplicationFormsDevelopment\workspace中，进入已复制的模块代码中，找到一个VS工程文件，使用VS 2013打开，如下图出现IFS DEVELOPMENT TOOLS则插件与VS 2013匹配成功，图中错误信息可以无视
-![](assets/image/10.png )
-![](assets/image/11.png )<br />
+### 3.3. 安装IFS前台开发插件→SetupIFSAPFDevelopment100
+本地路径选择2.6中配置的IFS项目路径，团队路径选择远程Build Home路径
+![](assets/image/huanjing-09.png )
+![](assets/image/huanjing-10.png )
+
+### 3.4. 安装后本地路径多了一些工具以及路径，这些都是IFS开发中需要的
+![](assets/image/huanjing-11.png )
+
 **注意事项：**<br />
 *需要安装``.``NET Framework 4.5.2环境*
   
 ****
   
+# 4.开发代码获取
+1. 删除workspace文件夹并从Git仓库中克隆整个workspace目录即可，前台开发的依赖工程需要到Build Home共享服务器中复制到需要的位置
+如果使用GitHub Desktop，File->Clone a repository->URL
+![](assets/image/huanjing-12.png )
+![](assets/image/huanjing-13.png )
+2. 复制Build Home中的Base层代码到本地路径
+![](assets/image/huanjing-14.png )
+![](assets/image/huanjing-15.png )
+3. 进入下级路径打开VS工程
+![](assets/image/huanjing-16.png )
+4. 弹出以下报错无视，这是自动更新，不在内网所以报错
+![](assets/image/huanjing-17.png )
+5. 编译工程，对打开的Core层工程右键Custpmize this project，弹出框选择Cust层，Ok
+![](assets/image/huanjing-18.png )
+6. 所有的客户化代码请在新建出的Cust层内进行开发，如下
+![](assets/image/huanjing-19.png )
