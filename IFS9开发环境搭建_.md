@@ -32,7 +32,7 @@
 ![](assets/image/huanjing-01.png )
 5. 确定project_root，一般也可以由build_home路径代替，注意文件目录
 ![](assets/image/huanjing-02.png )
-6. 填入项目名称，本地路径以及Build Home地址
+6. 填入项目名称，本地路径以及Build Home地址。Build Home为开发服务器开放的共享文件夹路径，需要先访问共享文件并勾选记录密码。
 ![](assets/image/huanjing-03.png )
 ![](assets/image/huanjing-04.png )
 7. 配置webservice信息，如需要再配置，本例学习不做配置
@@ -46,12 +46,10 @@
 ****
 # 3. 前台开发工具安装
   
-### 3.1. 修改C:\Windows\System32\drivers\etc\host 文件
+### 3.1. 修改C:\Windows\System32\drivers\etc\hosts 文件
   
-将host文件追加开发服务器地址信息，例如本次追加:192.168.100.137 win-8g8oqsp7hb9
+将本地计算机hosts文件追加开发服务器的IP、计算机名信息，例如本次追加:192.168.100.137  win-8g8oqsp7hb9
 ![](assets/image/4.png )
-打开浏览器，通过输入机器名确认可以访问上一步中配置的开发服务器名 http://win-8g8oqsp7hb9/
-![](assets/image/5.png )
   
 ### 3.2. 安装Microsoft Visual Studio 2013
   
