@@ -9,8 +9,9 @@
 ![](assets/image/new_item_4.png )
 42. Add new item to navigator(make sure to select correct navigator functional XML file),Save and deploy navigator.
 ![](assets/image/new_item_5.png )
-50. Scan presentation object & export ins file
+50. Scan presentation object & Transfer to Live repository & export ins file to database
 ![](assets/image/new_item_6.png )
+![](assets/image/huamian-1.png )
 60. Refresh security cache
 ![](assets/image/new_item_7.png )
 70. Restart the client & test.
