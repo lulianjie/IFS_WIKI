@@ -59,5 +59,7 @@ https://dl.devcloud.huaweicloud.com/home ，输入公司账号密码登录
 ### 3.5 更多Sourcetree操作请参照其他文章介绍
 https://www.cnblogs.com/tian-xie/p/6264104.html
 # 4.部分需要使用Git命令
-增量打包代码文件
+* 增量打包代码文件
 git diff 61d2112 f3c0f99 --name-only | xargs zip update.zip
+* Git回退版本
+https://blog.csdn.net/fuchaosz/article/details/52170105
