@@ -61,5 +61,14 @@ https://www.cnblogs.com/tian-xie/p/6264104.html
 # 4.部分需要使用Git命令
 * 增量打包代码文件
 git diff 61d2112 f3c0f99 --name-only | xargs zip update.zip
+git show 61d2112 --name-only | xargs zip update.zip
 * Git回退版本
 https://blog.csdn.net/fuchaosz/article/details/52170105
+* git 放弃本地修改，强制拉取更新
+git fetch 指令是下载远程仓库最新内容，不做合并 
+git reset 指令把HEAD指向master最新版本
+```git
+   git fetch --all
+   git reset --hard origin/master
+   git pull //可以省略
+```
