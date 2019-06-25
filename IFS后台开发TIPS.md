@@ -31,4 +31,9 @@
      LabelText "Amount in Document Currency";
   }
   ```
-* 
+* 后台异常写法
+  ```
+  IF Purchase_Authorizer_API.Get_C_Rfq(company_, rec_.authorize_id) <> 'TRUE' THEN
+     Error_SYS.Record_General(lu_name_, 'FWDAUTHLIMIT: :P1 has not enough authorization limit defined to authorize line no :P2', forwarded_to_, line_no_);
+  END IF;
+  ```
