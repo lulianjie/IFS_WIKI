@@ -1,16 +1,4 @@
-<!-- TOC -->
-
-- [事件列表](#事件列表)
-- [获得焦点](#获得焦点)
-- [画面激活](#画面激活)
-- [回车或者其他键盘按键](#回车或者其他键盘按键)
-- [下拉列表初始化](#下拉列表初始化)
-- [数据加载事件](#数据加载事件)
-- [数据验证](#数据验证)
-- [显示后台代码返回的info_信息](#显示后台代码返回的info_信息)
-- [判定右键选择单行数据可用](#判定右键选择单行数据可用)
-
-<!-- /TOC -->
+<!-- TOC -->autoauto- [事件列表](#事件列表)auto- [获得焦点](#获得焦点)auto- [画面激活](#画面激活)auto- [回车或者其他键盘按键](#回车或者其他键盘按键)auto- [下拉列表初始化](#下拉列表初始化)auto- [数据加载事件](#数据加载事件)auto- [数据验证](#数据验证)auto- [显示后台代码返回的info_信息](#显示后台代码返回的info_信息)auto- [判定右键选择单行数据可用](#判定右键选择单行数据可用)autoauto<!-- /TOC -->
 ## 事件列表
 Action Type        |    Action Description    |     Comments
 -----        |------| -------
@@ -20,6 +8,7 @@ Const.PM_LookupInit | 下拉列表初始化 | PM_LookupInit消息在用户第一
 Const.PM_DataItemPopulate | 数据加载 | 在使用服务器的值填充数据源之后，将Const.PM_DataItemPopulate消息发送到数据源中的所有数据项。
 Const.PM_DataItemValidate | 数据验证 | 该框架能够自动执行多种类型的验证。 应用程序只需捕获Const.PM_DataItemValidate即可执行其他验证。 该框架将自动执行以下验证：</BR>必填字段经验证具有值</BR>调用Foundation1属性中指定的任何验证方法
 Sys.SAM_AnyEdit | 数据修改 | 
+vrtDataSourceSaveModified  | Client修改保存事件 | 例子中在Base方法调用前增加自己的逻辑判断
 
 
 ## 获得焦点
@@ -178,5 +167,17 @@ Sys.SAM_AnyEdit | 数据修改 |
                 ((FndCommand)sender).Enabled = true;
                 return;
             }
+        }
+```
+## 判断遇到某属性为指定状态时数据更新报错（前台）
+```C#
+        public override SalBoolean vrtDataSourceSaveModified()
+        {
+            if (this.cbPrinted.Checked)
+            {
+                Ifs.Fnd.ApplicationForms.Int.AlertBox(Properties.Resources.TEXT_ERROR01, Ifs.Fnd.ApplicationForms.Properties.Resources.CAPTION_Error, Ifs.Fnd.ApplicationForms.Const.CRITICAL_Ok);
+                return false;
+            }
+            return base.vrtDataSourceSaveModified();
         }
 ```
