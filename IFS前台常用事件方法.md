@@ -2,13 +2,16 @@
 ## 事件列表
 Action Type        |    Action Description    |     Comments
 -----        |------| -------
-Const.PM_DataItemEntered|失去焦点| 当数据源想要在移动焦点时执行某些操作（例如启用/禁用按钮）时，此消息非常有用。
-Sys.SAM_SetFocus      |    获得焦点| 
-Const.PM_LookupInit | 下拉列表初始化 | PM_LookupInit消息在用户第一次下拉列表时发送。 填充列表后，不再发送PM_LookupInit。 应用程序可以调用LookupInvalidateData函数将当前列表数据标记为无效，并在下次列表下拉时再次发送PM_LookupInit。
-Const.PM_DataItemPopulate | 数据加载 | 在使用服务器的值填充数据源之后，将Const.PM_DataItemPopulate消息发送到数据源中的所有数据项。
-Const.PM_DataItemValidate | 数据验证 | 该框架能够自动执行多种类型的验证。 应用程序只需捕获Const.PM_DataItemValidate即可执行其他验证。 该框架将自动执行以下验证：</BR>必填字段经验证具有值</BR>调用Foundation1属性中指定的任何验证方法
+PM_DataItemEntered| 进入控件 | 当数据源想要在移动控件时执行某些操作（例如启用/禁用按钮）时，此消息非常有用。
+SAM_SetFocus      |    获得焦点| 
+PM_LookupInit | 下拉列表初始化 | PM_LookupInit消息在用户第一次下拉列表时发送。 填充列表后，不再发送PM_LookupInit。 应用程序可以调用LookupInvalidateData函数将当前列表数据标记为无效，并在下次列表下拉时再次发送PM_LookupInit。
+PM_DataItemPopulate | 数据加载 | 在使用服务器的值填充数据源之后，将Const.PM_DataItemPopulate消息发送到数据源中的所有数据项。
+PM_DataItemValidate | 数据验证 | 该框架能够自动执行多种类型的验证。 应用程序只需捕获PM_DataItemValidate即可执行其他验证。 该框架将自动执行以下验证：</BR>必填字段经验证具有值</BR>调用Foundation1属性中指定的任何验证方法
 Sys.SAM_AnyEdit | 数据修改 | 
 vrtDataSourceSaveModified  | Client修改保存事件 | 例子中在Base方法调用前增加自己的逻辑判断
+PM_DataItemQueryEnabled    | 前台控制某字段是否可用 | 例如根据另一个字段状态控制checkbox是否可以check
+vrtActivate | 画面激活 | 新打开算激活，画面切换不走该方法，可用于修改标题，打开画面增加逻辑，见例
+DataSourceUserWhere | 拼接一个用户及的where条件 | 用于增加条件或者打开画面加载限定条件的数据，见例
 
 
 ## 获得焦点
@@ -17,7 +20,7 @@ vrtDataSourceSaveModified  | Client修改保存事件 | 例子中在Base方法�
             this.dfsComponent_OnSAM_SetFocus(sender, e);
             break;
 ```
-## 画面激活
+## 画面激活，设置标题
 ```C#
         public override SalNumber vrtActivate(fcURL URL)
         {
@@ -179,5 +182,23 @@ vrtDataSourceSaveModified  | Client修改保存事件 | 例子中在Base方法�
                 return false;
             }
             return base.vrtDataSourceSaveModified();
+        }
+```
+## 画面激活，自动加载承认时间为空的数据
+```C#
+        public override SalNumber vrtActivate(fcURL URL)
+        {
+            using (new SalContext(this))
+            {
+                if (Ifs.Fnd.ApplicationForms.Var.DataTransfer.RecCountGet() == 0)
+                {
+                    DataSourceUserWhere(Ifs.Fnd.ApplicationForms.Const.METHOD_Execute, ((SalString)"n_applied_date IS NULL").ToHandle());//左侧不需要写where和and
+                    Sal.SendClassMessage(Ifs.Fnd.ApplicationForms.Const.PM_DataSourcePopulate, Ifs.Fnd.ApplicationForms.Const.METHOD_Execute, Ifs.Fnd.ApplicationForms.Const.POPULATE_Single);
+                    Sal.WaitCursor(false);//关闭遗漏游标
+                    return false;
+                }
+            }
+            Sal.WaitCursor(false);
+            return base.vrtActivate(URL);
         }
 ```

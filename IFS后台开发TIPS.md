@@ -37,3 +37,8 @@
      Error_SYS.Record_General(lu_name_, 'FWDAUTHLIMIT: :P1 has not enough authorization limit defined to authorize line no :P2', forwarded_to_, line_no_);
   END IF;
   ```
+IFS API | 备注
+---|---
+Fnd_Session_API | 会话API，可以取得登陆人以及登陆程序语言等信息
+Error_SYS | 异常API，常用语写后台报错
+Client_SYS |常用语拼接attr值
