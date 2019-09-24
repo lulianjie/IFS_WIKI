@@ -32,7 +32,7 @@
 ![](assets/image/huanjing-01.png )
 5. 确定project_root，一般也可以由build_home路径代替，注意文件目录
 ![](assets/image/huanjing-02.png )
-6. 填入项目名称，本地路径以及Build Home地址。Build Home为开发服务器开放的共享文件夹路径，需要先访问共享文件并勾选记录密码。
+6. 填入项目名称，本地路径以及Build Home地址。Build Home为开发服务器开放的共享文件夹路径，需要先访问共享文件并勾选记录密码（可以省略不填，download全代码即可）。
 ![](assets/image/huanjing-03.png )
 ![](assets/image/huanjing-04.png )
 7. 配置webservice信息，如需要再配置，本例学习不做配置
