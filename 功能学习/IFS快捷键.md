@@ -24,3 +24,7 @@
   F2
 * Zoom
   F9
+* 显示所有快捷键
+  Ctrl + F1
+
+![](image2/kuaijiejian.png )  
