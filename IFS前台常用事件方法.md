@@ -7,12 +7,16 @@ SAM_SetFocus      |    获得焦点|
 PM_LookupInit | 下拉列表初始化 | PM_LookupInit消息在用户第一次下拉列表时发送。 填充列表后，不再发送PM_LookupInit。 应用程序可以调用LookupInvalidateData函数将当前列表数据标记为无效，并在下次列表下拉时再次发送PM_LookupInit。
 PM_DataItemPopulate | 数据加载 | 在使用服务器的值填充数据源之后，将Const.PM_DataItemPopulate消息发送到数据源中的所有数据项。
 PM_DataItemValidate | 数据验证 | 该框架能够自动执行多种类型的验证。 应用程序只需捕获PM_DataItemValidate即可执行其他验证。 该框架将自动执行以下验证：</BR>必填字段经验证具有值</BR>调用Foundation1属性中指定的任何验证方法
+Sys.SAM_KillFocus | 失去焦点 | 事件，可用于自动填充需要调用函数取值的场合
 Sys.SAM_AnyEdit | 数据修改 | 事件
 Sal.TblAnyRows  | 确定任何行是否与某些标志匹配 | 常用语判断是否有行选中
-vrtDataSourceSaveModified  | Client修改保存事件 | 例子中在Base方法调用前增加自己的逻辑判断
+vrtDataSourceSaveModified  | 修改保存事件（包括子新增） | 例子中在Base方法调用前增加自己的逻辑判断
+vrtDataRecordExecuteModify | 仅修改保存事件 | 与vrtDataSourceSaveModified不同在于仅修改出发，新增不会触发
 PM_DataItemQueryEnabled    | 前台控制某字段是否可用 | 例如根据另一个字段状态控制checkbox是否可以check
 vrtActivate | 画面激活 | 新打开算激活，画面切换不走该方法，可用于修改标题，打开画面增加逻辑，见例
 DataSourceUserWhere | 拼接一个用户及的where条件 | 用于增加条件或者打开画面加载限定条件的数据，见例
+OnRearrangeMergedMenuItems | 重新排列菜单项 | LAA中客户化的右键菜单无法调整位置，使用该方法进行调整
+
 
 
 ## 获得焦点
@@ -195,7 +199,6 @@ DataSourceUserWhere | 拼接一个用户及的where条件 | 用于增加条件�
                 {
                     DataSourceUserWhere(Ifs.Fnd.ApplicationForms.Const.METHOD_Execute, ((SalString)"n_applied_date IS NULL").ToHandle());//左侧不需要写where和and
                     Sal.SendClassMessage(Ifs.Fnd.ApplicationForms.Const.PM_DataSourcePopulate, Ifs.Fnd.ApplicationForms.Const.METHOD_Execute, Ifs.Fnd.ApplicationForms.Const.POPULATE_Single);
-                    Sal.WaitCursor(false);//关闭遗漏游标
                     return false;
                 }
             }
@@ -221,5 +224,16 @@ DataSourceUserWhere | 拼接一个用户及的where条件 | 用于增加条件�
             }
 
             ((FndCommand)sender).Enabled = checkApproveInquire();
+        }
+```
+## 重新排列菜单项
+```C#
+        protected override void OnRearrangeMergedMenuItems(FndContextMenuStrip contextMenu)
+        {
+            base.OnRearrangeMergedMenuItems(contextMenu);
+
+            // Move the menu item "menuItem_Fetch_Authorization_Rule" defined in menu "menuFrmMethods_Cust"
+            // to the location just befor the menu item "menuItem_Release" which is defined in menu "menuFrmMethods".
+            contextMenu.MoveItemBefore(this.menuItem_Fetch_Authorization_Rule, this.menuItem_Release);
         }
 ```
