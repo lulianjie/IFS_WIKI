@@ -16,7 +16,9 @@ PM_DataItemQueryEnabled    | 前台控制某字段是否可用 | 例如根据另
 vrtActivate | 画面激活 | 新打开算激活，画面切换不走该方法，可用于修改标题，打开画面增加逻辑，见例
 DataSourceUserWhere | 拼接一个用户及的where条件 | 用于增加条件或者打开画面加载限定条件的数据，见例
 OnRearrangeMergedMenuItems | 重新排列菜单项 | LAA中客户化的右键菜单无法调整位置，使用该方法进行调整
-cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox必须使用，不然新增数据的时候Checked属性会变化
+cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox和ComboBox必须进行控制，不然新增数据的时候可以修改值，也可以用PM_DataItemQueryEnabled
+PM_DataItemQueryEnabled | 控制控件是否可编辑 | 
+DataSourceSaveMarkCommitted() | 标记已提交 | 用于欺骗程序修改已经提交。可用于控制保存按钮不可用的情况下，检索数据提示未保存问题。
 
 
 ## 获得焦点
@@ -190,6 +192,7 @@ cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox必须使用
         }
 ```
 ## 画面激活，自动加载承认时间为空的数据
+**该代码有问题，建议使用IFS功能设置为打开加载指定条件数据**
 ```C#
         public override SalNumber vrtActivate(fcURL URL)
         {
@@ -237,7 +240,7 @@ cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox必须使用
             contextMenu.MoveItemBefore(this.menuItem_Fetch_Authorization_Rule, this.menuItem_Release);
         }
 ```
-## CheckBox按钮只读事件
+## CheckBox按钮不可编辑
 ```C#
         private void cbNSendFlag_WindowActions(object sender, WindowActionsEventArgs e)
         {
@@ -246,6 +249,18 @@ cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox必须使用
                 case Sys.SAM_Click:
                     e.Handled = true;
                     this.cbNSendFlag.Checked = !(this.cbNSendFlag.Checked);
+                    break;
+            }
+        }
+```
+## 下拉列表控件不可编辑
+```C#
+        private void cmbNAppStatus_WindowActions(object sender, WindowActionsEventArgs e)
+        {
+            switch (e.ActionType)
+            {
+                case Ifs.Fnd.ApplicationForms.Const.PM_DataItemQueryEnabled:
+                    e.Return = Ifs.Fnd.ApplicationForms.Const.EDITSTATEFieldNotEnabled;
                     break;
             }
         }
