@@ -1,6 +1,28 @@
 # 使用后台建模工具新建一个Component
 ![](assets/image/new_component_1.png )
 ________
+# 新建修改deploy.ini文件
+
+[Component]
+Name=DHC
+
+[ComponentName]
+Description=Dalian Hi-think cust component
+
+[ComponentType]
+Type=Base
+
+
+[Connections]
+FNDBAS=DYNAMIC
+
+[CapMergeFiles]
+
+
+[CapMergeFilesLast]
+
+
+[PostInstallationData]
 # 将新建的Component信息写入到数据库中
 新建cre文件，将如下代码写入到文件中，然后发布到数据库中
 ```

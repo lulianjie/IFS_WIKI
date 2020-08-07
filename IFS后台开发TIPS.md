@@ -19,6 +19,38 @@
      DATATYPE  = 'STRING(12)'
      PROMPT    = 'Internal Order';
   ```
+* 视图样例
+  ```
+  -------------------- COMMON COLUMN DEFINITIONS ------------------------------
+  --(+)190305 EnvPriyeN C_RPT-002-1(START)
+  COLUMN Patter_Id IS
+    Flags      = 'KMI-L'
+    Datatype   = 'NUMBER'
+    Prompt     = 'Pattern ID';
+  COLUMN Patter_Name IS
+    Flags      = 'AMIUL'
+    Datatype   = 'STRING(50)'
+    Prompt     = 'Pattern Name';
+  --(+)190305 EnvPriyeN C_RPT-002-1(FINISH)
+  -------------------- PUBLIC VIEW DEFINITIONS --------------------------------
+  --(+)190305 EnvPriyeN C_RPT-002-1(START)
+  VIEW C_Payment_Term_Lov IS
+    Prompt     = 'Capex Payment Term'
+    Table      = 'C_PAYMENT_TERM_TAB'
+  SELECT DISTINCT  
+        patter_id                      patter_id,
+        patter_name                    patter_name
+  FROM   c_payment_term_tab
+  ORDER BY 1;
+  --(+)190305 EnvPriyeN C_RPT-002-1(FINISH)
+  -------------------- PRIVATE VIEW DEFINITIONS -------------------------------
+
+  --(+)190305 EnvPriyeN C_RPT-002-1(START)
+  @Override
+  VIEW C_Payment_Term IS
+    Prompt            = 'Capex Payment Term';
+  --(+)190305 EnvPriyeN C_RPT-002-1(FINISH)
+
 * 表字段默认值
   ```
   public       LoadDate                DATE                 A-IU- {
