@@ -23,14 +23,32 @@
   ```
   -------------------- COMMON COLUMN DEFINITIONS ------------------------------
   --(+)190305 EnvPriyeN C_RPT-002-1(START)
-  COLUMN Patter_Id IS
-    Flags      = 'KMI-L'
-    Datatype   = 'NUMBER'
-    Prompt     = 'Pattern ID';
-  COLUMN Patter_Name IS
-    Flags      = 'AMIUL'
-    Datatype   = 'STRING(50)'
-    Prompt     = 'Pattern Name';
+  VIEW Serial_No_For_Qman_Lov IS
+    Prompt = 'Receipt Inventory Location'
+    Receipt_Sequence.Flags = 'A----'
+    Order_No.Flags = 'P----'
+    Line_No.Flags = 'P----'
+    Release_No.Flags = 'P----'
+    Receipt_No.Flags = 'P----'
+    Serial_No.Flags = 'K---L'
+    Serial_No.Datatype = 'STRING(50)'
+    Lot_Batch_No.Flags = 'K---L'
+    Lot_Batch_No.Datatype = 'STRING(20)'
+    Part_No.Flags = 'A---L'
+    Part_No.Datatype = 'STRING(25)'
+    Part_No.Ref = 'PurchasePart(contract)'
+  SELECT receipt_sequence  receipt_sequence,
+        source_ref1       order_no,
+        source_ref2       line_no,
+        source_ref3       release_no,
+        receipt_no        receipt_no,
+        serial_no         serial_no,
+        lot_batch_no      lot_batch_no,
+        part_no           part_no,
+        rowid             objid,
+        ltrim(lpad(to_char(rowversion,'YYYYMMDDHH24MISS'),2000))       objversion,
+        rowkey            objkey
+  FROM   receipt_inv_location_tab;
   --(+)190305 EnvPriyeN C_RPT-002-1(FINISH)
   -------------------- PUBLIC VIEW DEFINITIONS --------------------------------
   --(+)190305 EnvPriyeN C_RPT-002-1(START)
@@ -74,3 +92,4 @@ IFS API | 备注
 Fnd_Session_API | 会话API，可以取得登陆人以及登陆程序语言等信息
 Error_SYS | 异常API，常用语写后台报错
 Client_SYS |常用语拼接attr值
+Language_SYS.Translate_Constant | 取翻译值

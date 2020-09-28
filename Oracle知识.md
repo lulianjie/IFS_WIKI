@@ -59,3 +59,15 @@
   SQL> shutdown immediate;
   SQL> startup;
   ```
+
+* 闪回查询
+```
+  SELECT * FROM BUSINESS_OPPORTUNITY_TAB
+  AS OF TIMESTAMP TO_TIMESTAMP('2020-09-03 1:30:00', 'YYYY-MM-DD HH:MI:SS')
+```
+* 闪回误删除的表（drop）
+```
+SELECT * FROM user_recyclebin
+WHERE original_name='SUPPLIER_BLANKET_LINE_TAB';
+FLASHBACK TABLE SUPPLIER_BLANKET_LINE_TAB TO BEFORE DROP;
+```

@@ -1,4 +1,3 @@
-<!-- TOC -->autoauto- [事件列表](#事件列表)auto- [获得焦点](#获得焦点)auto- [画面激活](#画面激活)auto- [回车或者其他键盘按键](#回车或者其他键盘按键)auto- [下拉列表初始化](#下拉列表初始化)auto- [数据加载事件](#数据加载事件)auto- [数据验证](#数据验证)auto- [显示后台代码返回的info_信息](#显示后台代码返回的info_信息)auto- [判定右键选择单行数据可用](#判定右键选择单行数据可用)autoauto<!-- /TOC -->
 ## 事件列表
 Action Type        |    Action Description    |     Comments
 -----        |------| -------
@@ -19,6 +18,14 @@ OnRearrangeMergedMenuItems | 重新排列菜单项 | LAA中客户化的右键菜
 cbNSendFlag_WindowActions | CheckBox只读 | 对于只读的CheckBox和ComboBox必须进行控制，不然新增数据的时候可以修改值，也可以用PM_DataItemQueryEnabled
 PM_DataItemQueryEnabled | 控制控件是否可编辑 | 
 DataSourceSaveMarkCommitted() | 标记已提交 | 用于欺骗程序修改已经提交。可用于控制保存按钮不可用的情况下，检索数据提示未保存问题。
+dfsCustomerPoNo.EditDataItemStateGet() == Ifs.Fnd.ApplicationForms.Const.EDIT_Changed |前台判断值变更|
+this.DataRecordStateGet() == "Planned" | 如果画面支持状态机，则可以取得objstate |
+FromHandle(i_hWndParent) | 取亲级画面 | frmCOrderChgQuotation_Cust.FromHandle(i_hWndParent).cbUsePriceInclTax.Checked |
+PM_DataItemLovUserWhere | 处理LOV传入条件 | 用于复杂LOV，条件无法通过设置传入 |
+PM_DataItemLovDone | LOV选择后处理 | 对字段赋值 |
+DbTransactionBegin;DbTransactionEnd | 前台事务写法 | 保持事务一致性 |
+DataSourceRefresh | 画面刷新 | 发送消息或者方法调用都可以。 DataSourceRefresh(Ifs.Fnd.ApplicationForms.Const.METHOD_Execute); |
+DataSourceIsDirty | 判断数据是否修改 | 可用于局部控制某页签禁止修改等 |
 
 
 ## 获得焦点
@@ -213,6 +220,12 @@ DataSourceSaveMarkCommitted() | 标记已提交 | 用于欺骗程序修改已经
 ```C#
         private void menuTbwMethods_menu_Authorize_Acknowledge_Inquire(object sender, Fnd.Windows.Forms.FndCommandInquireEventArgs e)
         {
+            //权限判断
+            if (!(Ifs.Fnd.ApplicationForms.Var.Security.IsMethodAvailable("Order_Quotation_API.C_Approval") && Ifs.Fnd.ApplicationForms.Var.Security.IsPresObjectAvailable(Pal.GetActiveInstanceName("frmSupplierPerPart"))))
+            {
+                ((FndCommand)sender).Enabled = false;
+                return;
+            }
             // 数据未保存判断
             if (Sal.SendMsg(this, Ifs.Fnd.ApplicationForms.Const.PM_DataSourceSave, Ifs.Fnd.ApplicationForms.Const.METHOD_Inquire, 0))
             {
@@ -227,6 +240,7 @@ DataSourceSaveMarkCommitted() | 标记已提交 | 用于欺骗程序修改已经
             }
 
             ((FndCommand)sender).Enabled = checkApproveInquire();
+            return;
         }
 ```
 ## 重新排列菜单项
@@ -264,4 +278,64 @@ DataSourceSaveMarkCommitted() | 标记已提交 | 用于欺骗程序修改已经
                     break;
             }
         }
+```
+## ZOOM画面跳转功能代码
+```C#
+        private void dfsCTechnologyTypeNo_OnPM_DataItemZoom(object sender, WindowActionsEventArgs e)
+        {
+            e.Handled = true;
+            if (Sys.wParam == Ifs.Fnd.ApplicationForms.Const.METHOD_Inquire)
+            {
+                e.Return = Ifs.Fnd.ApplicationForms.Var.Component.IsWindowAvailable(Pal.GetActiveInstanceName("frmCTechnologyType_Cust")) && Ifs.Fnd.ApplicationForms.Var.Security.IsDataSourceAvailable(Pal.GetActiveInstanceName("frmCTechnologyType_Cust"));
+                return;
+            }
+
+            if (Sys.wParam == Ifs.Fnd.ApplicationForms.Const.METHOD_Execute)
+            {
+                this.sItemNames[0] = "C_TECHNOLOGY_TYPE1";
+                this.hWndItems[0] = this.dfsCTechnologyType;
+                Ifs.Fnd.ApplicationForms.Var.DataTransfer.Init(this.p_sLogicalUnit, this, this.sItemNames, this.hWndItems);
+                SessionNavigate(Pal.GetActiveInstanceName("frmCTechnologyType_Cust"));
+                e.Return = true;
+                return;
+            }
+
+            e.Return = Sal.SendClassMessage(Ifs.Fnd.ApplicationForms.Const.PM_DataItemZoom, Sys.wParam, Sys.lParam);
+        }
+```
+## LOV传入条件
+```C#
+        private void colsCDepartmentId_OnPM_DataItemLovUserWhere(object sender, WindowActionsEventArgs e)
+        {
+            #region Actions
+            e.Handled = true;
+            e.Return = ((SalString)"COMPANY = :i_hWndFrame.dlgCOrderApprovalDept_Cust.sCompany").ToHandle();
+            return;
+            #endregion
+        }
+```
+## LOV选择数据后赋值
+```C#
+        private void colsCDepartmentId_OnPM_DataItemLovDone(object sender, WindowActionsEventArgs e)
+        {
+            #region Actions
+            e.Handled = true;
+            Sal.SendMsg(this.tblCOrderApprovalDept_colsCDepartmentId, Ifs.Fnd.ApplicationForms.Const.PM_DataItemValueSet, 1, Vis.StrSubstitute(Ifs.Fnd.ApplicationForms.Int.PalAttrGet("DEPT_ID", SalString.FromHandle(Sys.lParam)), ((SalNumber)31).ToCharacter(), "").ToHandle());
+            Sal.SendMsg(this.tblCOrderApprovalDept_colsCDepartmentDesc, Ifs.Fnd.ApplicationForms.Const.PM_DataItemValueSet, 1, Vis.StrSubstitute(Ifs.Fnd.ApplicationForms.Int.PalAttrGet("DEPT_NAME", SalString.FromHandle(Sys.lParam)), ((SalNumber)31).ToCharacter(), "").ToHandle());
+            #endregion
+        }
+```
+## 头为下达状态则（页签1）修改报错，重写页签1的vrtDataSourceSaveModified
+```
+    public override SalBoolean vrtDataSourceSaveModified()
+    {
+        if (frmOrderQuotation_Cust.FromHandle(i_hWndParent).DataRecordStateGet() == "Released")
+        {
+            if (this.DataSourceIsDirty(Ifs.Fnd.ApplicationForms.Const.METHOD_Inquire))
+            {
+                Ifs.Fnd.ApplicationForms.Int.AlertBox(Properties.Resources.CC_E00008, Ifs.Fnd.ApplicationForms.Properties.Resources.CAPTION_Error, Ifs.Fnd.ApplicationForms.Const.CRITICAL_Ok);
+                return false;
+            }
+        }
+    }
 ```
